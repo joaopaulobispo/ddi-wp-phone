@@ -78,6 +78,34 @@
     max-width: 100% !important;
 }
 
+/* Container específico para CF7 */
+.ddi-cf7-container {
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.ddi-cf7-selector {
+    position: absolute !important;
+    left: 1px !important;
+    top: 1px !important;
+    z-index: 10 !important;
+    display: flex !important;
+    align-items: center !important;
+    background: #fff !important;
+    border: none !important;
+    cursor: pointer !important;
+    width: 70px !important;
+    padding: 0 8px !important;
+    font-size: 14px !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+    box-sizing: border-box !important;
+}
+
+.ddi-cf7-selector:hover {
+    background: #f8f9fa !important;
+}
+
 /* Dropdown de países */
 .ddi-phone-dropdown {
     position: absolute !important;

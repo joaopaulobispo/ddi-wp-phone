@@ -319,17 +319,15 @@ class DDI_WP_Phone_Core {
                     // Verificar se é Contact Form 7
                     var isCF7 = input.classList.contains('wpcf7-form-control') || input.closest('.wpcf7-form');
                     
+                    // Se for CF7, usar abordagem diferente
+                    if (isCF7) {
+                        addPhoneSelectorCF7(input);
+                        return;
+                    }
+                    
                     // Criar container
                     var container = document.createElement('div');
                     container.className = 'ddi-phone-container';
-                    
-                    // Se for CF7, preservar a largura original antes de qualquer modificação
-                    if (isCF7) {
-                        var originalWidth = input.offsetWidth;
-                        var originalStyle = input.getAttribute('style') || '';
-                        input.setAttribute('data-original-width', originalWidth);
-                        input.setAttribute('data-original-style', originalStyle);
-                    }
                     
                     // Mover input para container
                     input.parentNode.insertBefore(container, input);
@@ -353,30 +351,58 @@ class DDI_WP_Phone_Core {
                     // Ajustar background responsivo
                     adjustResponsiveBackground(container, input);
                     
-                    // Correção específica para CF7
-                    if (isCF7) {
-                        // Restaurar largura original
-                        var savedWidth = input.getAttribute('data-original-width');
-                        if (savedWidth) {
-                            input.style.width = savedWidth + 'px';
-                            input.style.maxWidth = savedWidth + 'px';
-                            input.style.minWidth = savedWidth + 'px';
-                        }
-                        
-                        // Garantir que o container não afete a largura
-                        container.style.width = '100%';
-                        container.style.maxWidth = '100%';
-                        container.style.display = 'inline-block';
-                        
-                        // Aplicar CSS específico para CF7
-                        input.style.boxSizing = 'border-box';
-                        input.style.paddingLeft = '82px';
-                    }
-                    
                     console.log('DDI WP Phone: Seletor adicionado com sucesso');
                     
                 } catch (error) {
                     console.log('DDI WP Phone: Erro ao adicionar seletor:', error);
+                }
+            }
+            
+            function addPhoneSelectorCF7(input) {
+                try {
+                    // Preservar dimensões originais
+                    var originalWidth = input.offsetWidth;
+                    var originalHeight = input.offsetHeight;
+                    var originalStyle = input.getAttribute('style') || '';
+                    
+                    // Salvar dados originais
+                    input.setAttribute('data-original-width', originalWidth);
+                    input.setAttribute('data-original-height', originalHeight);
+                    input.setAttribute('data-original-style', originalStyle);
+                    
+                    // Criar container específico para CF7
+                    var container = document.createElement('div');
+                    container.className = 'ddi-phone-container ddi-cf7-container';
+                    container.style.cssText = 'position: relative !important; display: inline-block !important; width: ' + originalWidth + 'px !important;';
+                    
+                    // Mover input para container
+                    input.parentNode.insertBefore(container, input);
+                    container.appendChild(input);
+                    
+                    // Criar seletor específico para CF7
+                    var selector = document.createElement('div');
+                    selector.className = 'ddi-phone-selector ddi-cf7-selector';
+                    selector.innerHTML = currentCountry.flag + ' ' + currentCountry.ddi;
+                    selector.style.cssText = 'position: absolute !important; left: 1px !important; top: 1px !important; z-index: 10 !important; display: flex !important; align-items: center !important; background: #fff !important; border: none !important; cursor: pointer !important; width: 70px !important; height: ' + (originalHeight - 2) + 'px !important; padding: 0 8px !important; font-size: 14px !important; color: #333 !important; font-weight: 500 !important; box-sizing: border-box !important;';
+                    
+                    selector.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        toggleDropdown(container, selector);
+                    });
+                    
+                    // Inserir seletor antes do input
+                    container.insertBefore(selector, input);
+                    
+                    // Aplicar estilos específicos ao input CF7
+                    input.style.cssText = originalStyle + '; padding-left: 82px !important; width: ' + originalWidth + 'px !important; height: ' + originalHeight + 'px !important; box-sizing: border-box !important;';
+                    
+                    // Aplicar máscara inicial
+                    applyMask(input, currentCountry.mask);
+                    
+                    console.log('DDI WP Phone: Seletor CF7 adicionado com sucesso');
+                    
+                } catch (error) {
+                    console.log('DDI WP Phone: Erro ao adicionar seletor CF7:', error);
                 }
             }
             
