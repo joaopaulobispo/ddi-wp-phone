@@ -360,17 +360,19 @@ class DDI_WP_Phone_Core {
                         var inputStyle = window.getComputedStyle(input);
                         var inputBorderTop = parseInt(inputStyle.borderTopWidth) || 0;
                         var inputBorderLeft = parseInt(inputStyle.borderLeftWidth) || 0;
+                        var inputBorderRight = parseInt(inputStyle.borderRightWidth) || 0;
+                        var inputBorderBottom = parseInt(inputStyle.borderBottomWidth) || 0;
                         var inputPaddingTop = parseInt(inputStyle.paddingTop) || 0;
                         var inputPaddingLeft = parseInt(inputStyle.paddingLeft) || 0;
                         
-                        // Calcular altura do seletor (altura do input menos bordas)
-                        var selectorHeight = inputHeight - (inputBorderTop * 2);
+                        // Calcular altura do seletor (altura do input menos bordas e 1px de margem)
+                        var selectorHeight = inputHeight - (inputBorderTop + inputBorderBottom) - 2; // -2 para 1px em cima e 1px embaixo
                         
                         // Ajustar altura do seletor
                         selector.style.height = selectorHeight + 'px';
                         selector.style.lineHeight = selectorHeight + 'px';
                         
-                        // Posicionar o seletor dentro do input (considerando bordas)
+                        // Posicionar o seletor dentro do input (considerando bordas + 1px de margem)
                         selector.style.top = (inputBorderTop + 1) + 'px';
                         selector.style.left = (inputBorderLeft + 1) + 'px';
                         selector.style.bottom = 'auto';
@@ -380,9 +382,15 @@ class DDI_WP_Phone_Core {
                         selector.style.border = 'none';
                         
                         // Ajustar padding para ficar dentro do input
-                        var adjustedPaddingTop = Math.max(0, inputPaddingTop - inputBorderTop);
+                        var adjustedPaddingTop = Math.max(0, inputPaddingTop - inputBorderTop - 1);
                         selector.style.paddingTop = adjustedPaddingTop + 'px';
                         selector.style.paddingBottom = adjustedPaddingTop + 'px';
+                        
+                        // Ajustar largura para não cobrir a borda direita
+                        var inputWidth = input.offsetWidth;
+                        var selectorWidth = 60; // largura base do seletor
+                        var maxSelectorWidth = inputWidth - (inputBorderLeft + inputBorderRight) - 2; // -2 para 1px de cada lado
+                        selector.style.width = Math.min(selectorWidth, maxSelectorWidth) + 'px';
                     }
                 }
                 

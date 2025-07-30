@@ -21,8 +21,9 @@
     background: #fff !important;
     border: none !important;
     cursor: pointer !important;
-    min-width: 60px !important;
-    padding: 0 8px !important;
+    min-width: 58px !important;
+    max-width: 58px !important;
+    padding: 0 6px !important;
     font-size: 14px !important;
     color: #333 !important;
     font-weight: 500 !important;
@@ -79,9 +80,10 @@
 /* Responsividade */
 @media (max-width: 768px) {
     .ddi-phone-selector {
-        min-width: 50px !important;
+        min-width: 48px !important;
+        max-width: 48px !important;
         font-size: 12px !important;
-        padding: 0 6px !important;
+        padding: 0 4px !important;
     }
     
     .ddi-phone-container input {
@@ -109,15 +111,15 @@
 /* Garantir que o seletor sempre tenha a altura correta */
 .ddi-phone-selector {
     height: auto !important;
-    min-height: 38px !important;
+    min-height: 36px !important;
 }
 
 /* Ajustes para inputs com alturas diferentes */
 .ddi-phone-container input[style*="height"] + .ddi-phone-selector,
 .ddi-phone-container input[class*="large"] + .ddi-phone-selector {
-    min-height: 44px !important;
+    min-height: 42px !important;
 }
 
 .ddi-phone-container input[class*="small"] + .ddi-phone-selector {
-    min-height: 32px !important;
+    min-height: 30px !important;
 } 
