@@ -301,8 +301,20 @@ class DDI_WP_Phone_Core {
                     console.log('DDI WP Phone: Encontrados', allInputs.length, 'campos de telefone');
                     
                     allInputs.forEach(function(input) {
+                        // Verificar se já foi processado e se não está em um popup já processado
                         if (!input.classList.contains('ddi-processed')) {
+                            // Verificar se o input está em um popup que já foi processado
+                            var popupContainer = input.closest('.elementor-popup-modal, .elementor-lightbox, .popup');
+                            if (popupContainer && popupContainer.classList.contains('ddi-popup-processed')) {
+                                return; // Pular se o popup já foi processado
+                            }
+                            
                             addPhoneSelector(input);
+                            
+                            // Marcar popup como processado se estiver em um
+                            if (popupContainer) {
+                                popupContainer.classList.add('ddi-popup-processed');
+                            }
                         }
                     });
                     
@@ -313,6 +325,11 @@ class DDI_WP_Phone_Core {
             
             function addPhoneSelector(input) {
                 try {
+                    // Verificar se já foi processado
+                    if (input.classList.contains('ddi-processed')) {
+                        return;
+                    }
+                    
                     // Marcar como processado
                     input.classList.add('ddi-processed');
                     
@@ -564,13 +581,27 @@ class DDI_WP_Phone_Core {
                 
                 var input = container.querySelector('input');
                 if (input) {
+                    // Aplicar nova máscara sem conflitar com máscaras anteriores
                     applyMask(input, country.mask);
+                    
+                    // Limpar o valor do input quando trocar de país
+                    input.value = '';
+                    
+                    // Ajustar background responsivo
                     adjustResponsiveBackground(container, input);
                 }
             }
             
             function applyMask(input, mask) {
-                input.addEventListener('input', function(e) {
+                // Remover listeners anteriores para evitar duplicação
+                var existingListener = input.getAttribute('data-ddi-mask-listener');
+                if (existingListener) {
+                    input.removeEventListener('input', window[existingListener]);
+                }
+                
+                // Criar função única para este input
+                var listenerName = 'ddiMaskListener_' + Math.random().toString(36).substr(2, 9);
+                window[listenerName] = function(e) {
                     var value = e.target.value.replace(/\D/g, '');
                     var maskedValue = '';
                     var maskIndex = 0;
@@ -587,7 +618,11 @@ class DDI_WP_Phone_Core {
                     }
                     
                     e.target.value = maskedValue;
-                });
+                };
+                
+                // Adicionar listener e marcar
+                input.addEventListener('input', window[listenerName]);
+                input.setAttribute('data-ddi-mask-listener', listenerName);
             }
             
             // Inicializar quando DOM estiver pronto
