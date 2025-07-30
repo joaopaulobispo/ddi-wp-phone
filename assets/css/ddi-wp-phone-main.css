@@ -15,7 +15,6 @@
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    bottom: 0 !important;
     z-index: 10 !important;
     display: flex !important;
     align-items: center !important;
@@ -30,6 +29,7 @@
     color: #333 !important;
     font-weight: 500 !important;
     transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
 }
 
 .ddi-phone-selector:hover {
@@ -102,4 +102,27 @@
         padding: 6px 10px !important;
         font-size: 13px !important;
     }
+}
+
+/* Correções específicas para diferentes temas */
+.ddi-phone-container input:focus {
+    border-left: none !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Garantir que o seletor sempre tenha a altura correta */
+.ddi-phone-selector {
+    height: auto !important;
+    min-height: 38px !important;
+}
+
+/* Ajustes para inputs com alturas diferentes */
+.ddi-phone-container input[style*="height"] + .ddi-phone-selector,
+.ddi-phone-container input[class*="large"] + .ddi-phone-selector {
+    min-height: 44px !important;
+}
+
+.ddi-phone-container input[class*="small"] + .ddi-phone-selector {
+    min-height: 32px !important;
 } 
