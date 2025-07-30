@@ -25,7 +25,9 @@ class DDI_WP_Phone_Core {
      */
     private function init_hooks() {
         add_action('init', array($this, 'init'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+        
+        // Usar prioridade baixa para carregar depois do Elementor
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 999);
     }
     
     /**
@@ -53,10 +55,12 @@ class DDI_WP_Phone_Core {
         // Carregar text domain para internacionalização
         load_plugin_textdomain('ddi-wp-phone', false, dirname(DDI_WP_PHONE_PLUGIN_BASENAME) . '/languages');
         
-        // Inicializar integrações
-        new DDI_WP_Phone_Elementor_Integration();
-        new DDI_WP_Phone_CF7_Integration();
-        new DDI_WP_Phone_WooCommerce_Integration();
+        // Inicializar integrações apenas se necessário
+        if ($this->should_load_integrations()) {
+            new DDI_WP_Phone_Elementor_Integration();
+            new DDI_WP_Phone_CF7_Integration();
+            new DDI_WP_Phone_WooCommerce_Integration();
+        }
         
         // Inicializar admin se necessário
         if (is_admin()) {
@@ -68,7 +72,7 @@ class DDI_WP_Phone_Core {
      * Enfileira scripts e estilos
      */
     public function enqueue_scripts() {
-        // Verificar se há formulários na página
+        // Verificar se há formulários na página de forma mais segura
         if ($this->should_load_assets()) {
             $assets = new DDI_WP_Phone_Assets();
             $assets->enqueue_frontend_assets();
@@ -76,9 +80,41 @@ class DDI_WP_Phone_Core {
     }
     
     /**
+     * Verifica se deve carregar as integrações
+     */
+    private function should_load_integrations() {
+        // Verificar se estamos no frontend
+        if (is_admin()) {
+            return false;
+        }
+        
+        // Verificar se há formulários do Elementor
+        if (class_exists('Elementor\Plugin')) {
+            return true;
+        }
+        
+        // Verificar se há formulários do Contact Form 7
+        if (class_exists('WPCF7')) {
+            return true;
+        }
+        
+        // Verificar se há WooCommerce
+        if (class_exists('WooCommerce')) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
      * Verifica se deve carregar os assets
      */
     private function should_load_assets() {
+        // Verificar se estamos no frontend
+        if (is_admin()) {
+            return false;
+        }
+        
         // Verificar se há formulários do Elementor
         if (class_exists('Elementor\Plugin') && $this->has_elementor_forms()) {
             return true;
@@ -107,15 +143,18 @@ class DDI_WP_Phone_Core {
             return false;
         }
         
-        // Verificar se o post foi criado com Elementor
-        if (class_exists('Elementor\Plugin')) {
-            $document = \Elementor\Plugin::$instance->documents->get($post->ID);
-            if ($document && $document->is_built_with_elementor()) {
-                return true;
-            }
+        // Verificar se o Elementor está ativo
+        if (!class_exists('Elementor\Plugin')) {
+            return false;
         }
         
-        return false;
+        // Verificar se o post foi criado com Elementor
+        $document = \Elementor\Plugin::$instance->documents->get($post->ID);
+        if (!$document || !$document->is_built_with_elementor()) {
+            return false;
+        }
+        
+        return true;
     }
     
     /**
@@ -125,6 +164,11 @@ class DDI_WP_Phone_Core {
         global $post;
         
         if (!$post) {
+            return false;
+        }
+        
+        // Verificar se o CF7 está ativo
+        if (!class_exists('WPCF7')) {
             return false;
         }
         

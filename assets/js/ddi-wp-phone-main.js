@@ -5,8 +5,16 @@
  * @since 1.0.0
  */
 
-(function($) {
+(function() {
     'use strict';
+    
+    // Verificar se jQuery está disponível
+    if (typeof jQuery === 'undefined') {
+        console.log('DDI WP Phone: jQuery não encontrado, usando JavaScript puro');
+        return;
+    }
+    
+    var $ = jQuery;
     
     // Namespace global
     window.DDIWpPhone = {
@@ -20,23 +28,34 @@
         init: function() {
             console.log('DDI WP Phone: Inicializando...');
             
-            // Verificar se jQuery está disponível
-            if (typeof $ === 'undefined') {
-                console.log('DDI WP Phone: jQuery não encontrado');
-                return;
-            }
-            
             // Verificar se ddiWpPhone está disponível
-            if (typeof window.ddiWpPhone !== 'undefined') {
+            if (typeof window.ddiWpPhone !== 'undefined' && window.ddiWpPhone.settings) {
                 this.settings = window.ddiWpPhone.settings || {};
                 console.log('DDI WP Phone: Configurações carregadas', this.settings);
             }
             
             // Aguardar o DOM estar pronto
             $(document).ready(function() {
-                console.log('DDI WP Phone: DOM pronto, processando formulários...');
-                DDIWpPhone.processForms();
+                console.log('DDI WP Phone: DOM pronto, aguardando Elementor...');
+                
+                // Aguardar o Elementor carregar
+                DDIWpPhone.waitForElementor();
             });
+        },
+        
+        /**
+         * Aguarda o Elementor carregar
+         */
+        waitForElementor: function() {
+            if (typeof elementorFrontend !== 'undefined') {
+                console.log('DDI WP Phone: Elementor já carregado, processando...');
+                this.processForms();
+            } else {
+                console.log('DDI WP Phone: Aguardando Elementor carregar...');
+                setTimeout(function() {
+                    DDIWpPhone.waitForElementor();
+                }, 500);
+            }
         },
         
         /**
@@ -132,4 +151,4 @@
         DDIWpPhone.init();
     }
     
-})(jQuery); 
+})(); 
