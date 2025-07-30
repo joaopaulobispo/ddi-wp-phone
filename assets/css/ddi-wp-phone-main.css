@@ -29,7 +29,7 @@
     font-weight: 500 !important;
     transition: all 0.2s ease !important;
     box-sizing: border-box !important;
-    border-radius: 0 !important;
+    /* Border-radius será controlado dinamicamente pelo JavaScript */
 }
 
 .ddi-phone-selector:hover {

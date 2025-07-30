@@ -365,6 +365,28 @@ class DDI_WP_Phone_Core {
                         var inputPaddingTop = parseInt(inputStyle.paddingTop) || 0;
                         var inputPaddingLeft = parseInt(inputStyle.paddingLeft) || 0;
                         
+                        // Detectar border-radius do input
+                        var inputBorderRadius = inputStyle.borderRadius;
+                        var borderRadiusValues = inputBorderRadius.split(' ');
+                        
+                        // Aplicar border-radius ao seletor (apenas canto superior esquerdo e inferior esquerdo)
+                        if (inputBorderRadius && inputBorderRadius !== '0px') {
+                            var topLeftRadius = borderRadiusValues[0] || borderRadiusValues[0] || borderRadiusValues[0] || borderRadiusValues[0];
+                            var bottomLeftRadius = borderRadiusValues.length > 2 ? borderRadiusValues[2] : topLeftRadius;
+                            
+                            // Converter para número e subtrair 1px para ficar dentro da borda
+                            var topLeftValue = Math.max(0, parseInt(topLeftRadius) - 1);
+                            var bottomLeftValue = Math.max(0, parseInt(bottomLeftRadius) - 1);
+                            
+                            selector.style.borderTopLeftRadius = topLeftValue + 'px';
+                            selector.style.borderBottomLeftRadius = bottomLeftValue + 'px';
+                            selector.style.borderTopRightRadius = '0px';
+                            selector.style.borderBottomRightRadius = '0px';
+                        } else {
+                            // Reset border-radius se não houver
+                            selector.style.borderRadius = '0px';
+                        }
+                        
                         // Calcular altura do seletor (altura do input menos bordas e 1px de margem)
                         var selectorHeight = inputHeight - (inputBorderTop + inputBorderBottom) - 2; // -2 para 1px em cima e 1px embaixo
                         
