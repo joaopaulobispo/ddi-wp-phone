@@ -365,6 +365,9 @@ class DDI_WP_Phone_Core {
                     // Aplicar máscara inicial
                     applyMask(input, currentCountry.mask);
                     
+                    // Limpar campo se tiver valor do cache
+                    cleanFieldFromCache(input);
+                    
                     // Ajustar background responsivo
                     adjustResponsiveBackground(container, input);
                     
@@ -415,6 +418,9 @@ class DDI_WP_Phone_Core {
                     
                     // Aplicar máscara inicial
                     applyMask(input, currentCountry.mask);
+                    
+                    // Limpar campo se tiver valor do cache
+                    cleanFieldFromCache(input);
                     
                     console.log('DDI WP Phone: Seletor CF7 adicionado com sucesso');
                     
@@ -592,11 +598,28 @@ class DDI_WP_Phone_Core {
                 }
             }
             
+            function cleanFieldFromCache(input) {
+                // Limpar campo se tiver valor do cache do navegador
+                if (input.value) {
+                    var cleanValue = input.value.replace(/\D/g, '');
+                    if (cleanValue.length > 0) {
+                        input.value = '';
+                        console.log('DDI WP Phone: Campo limpo do cache do navegador');
+                    }
+                }
+            }
+            
             function applyMask(input, mask) {
                 // Remover listeners anteriores para evitar duplicação
                 var existingListener = input.getAttribute('data-ddi-mask-listener');
                 if (existingListener) {
                     input.removeEventListener('input', window[existingListener]);
+                }
+                
+                // Remover listeners de focus anteriores
+                var existingFocusListener = input.getAttribute('data-ddi-focus-listener');
+                if (existingFocusListener) {
+                    input.removeEventListener('focus', window[existingFocusListener]);
                 }
                 
                 // Criar função única para este input
@@ -620,9 +643,32 @@ class DDI_WP_Phone_Core {
                     e.target.value = maskedValue;
                 };
                 
-                // Adicionar listener e marcar
+                // Criar função para limpar campo no focus
+                var focusListenerName = 'ddiFocusListener_' + Math.random().toString(36).substr(2, 9);
+                window[focusListenerName] = function(e) {
+                    // Limpar apenas se o campo não estiver vazio e não for a primeira vez que o usuário foca
+                    if (e.target.value && !e.target.getAttribute('data-ddi-first-focus')) {
+                        // Verificar se o valor contém caracteres não numéricos ou está mal formatado
+                        var cleanValue = e.target.value.replace(/\D/g, '');
+                        if (cleanValue.length > 0) {
+                            // Limpar o campo para permitir digitação limpa
+                            e.target.value = '';
+                            console.log('DDI WP Phone: Campo limpo automaticamente para evitar conflitos com cache');
+                        }
+                    }
+                    
+                    // Marcar que já foi focado pela primeira vez
+                    e.target.setAttribute('data-ddi-first-focus', 'true');
+                };
+                
+                // Adicionar listeners e marcar
                 input.addEventListener('input', window[listenerName]);
+                input.addEventListener('focus', window[focusListenerName]);
                 input.setAttribute('data-ddi-mask-listener', listenerName);
+                input.setAttribute('data-ddi-focus-listener', focusListenerName);
+                
+                // Limpar campo inicialmente se já tiver valor (cache do navegador)
+                cleanFieldFromCache(input);
             }
             
             // Inicializar quando DOM estiver pronto
