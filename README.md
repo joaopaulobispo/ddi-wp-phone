@@ -130,7 +130,15 @@ Este plugin está licenciado sob a GPL v2 ou posterior.
 
 **Wplugin** - https://www.wplugin.com.br
 
-## �� Changelog
+## 🔄 Changelog
+
+### v1.2.0 (2024-01-XX)
+- ✅ **Nova Funcionalidade**: Limpeza automática de cache do navegador
+- ✅ **Melhoria**: Remove valores pré-preenchidos dos campos de telefone
+- ✅ **Melhoria**: Previne conflitos com máscaras de formatação
+- ✅ **Melhoria**: Limpeza inteligente no foco do campo
+- ✅ **Melhoria**: Logs informativos para debug
+- ✅ **Estabilidade**: Melhor experiência do usuário com campos sempre limpos
 
 ### v1.1.0 (2024-01-XX)
 - ✅ **Módulo 2**: Integração completa com Contact Form 7
