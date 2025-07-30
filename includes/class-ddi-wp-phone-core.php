@@ -410,7 +410,7 @@ class DDI_WP_Phone_Core {
                         
                         // Ajustar largura para não cobrir a borda direita
                         var inputWidth = input.offsetWidth;
-                        var selectorWidth = 60; // largura base do seletor
+                        var selectorWidth = 70; // largura base do seletor (aumentada para acomodar DDIs maiores)
                         var maxSelectorWidth = inputWidth - (inputBorderLeft + inputBorderRight) - 2; // -2 para 1px de cada lado
                         selector.style.width = Math.min(selectorWidth, maxSelectorWidth) + 'px';
                     }

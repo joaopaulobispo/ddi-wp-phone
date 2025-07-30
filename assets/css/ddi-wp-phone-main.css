@@ -21,9 +21,9 @@
     background: #fff !important;
     border: none !important;
     cursor: pointer !important;
-    min-width: 58px !important;
-    max-width: 58px !important;
-    padding: 0 6px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    padding: 0 8px !important;
     font-size: 14px !important;
     color: #333 !important;
     font-weight: 500 !important;
@@ -38,7 +38,7 @@
 
 /* Campo de input dentro do container */
 .ddi-phone-container input {
-    padding-left: 70px !important;
+    padding-left: 82px !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
@@ -80,14 +80,14 @@
 /* Responsividade */
 @media (max-width: 768px) {
     .ddi-phone-selector {
-        min-width: 48px !important;
-        max-width: 48px !important;
+        min-width: 60px !important;
+        max-width: 60px !important;
         font-size: 12px !important;
-        padding: 0 4px !important;
+        padding: 0 6px !important;
     }
     
     .ddi-phone-container input {
-        padding-left: 60px !important;
+        padding-left: 72px !important;
     }
     
     .ddi-phone-dropdown {
