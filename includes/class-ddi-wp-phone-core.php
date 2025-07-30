@@ -316,9 +316,20 @@ class DDI_WP_Phone_Core {
                     // Marcar como processado
                     input.classList.add('ddi-processed');
                     
+                    // Verificar se é Contact Form 7
+                    var isCF7 = input.classList.contains('wpcf7-form-control') || input.closest('.wpcf7-form');
+                    
                     // Criar container
                     var container = document.createElement('div');
                     container.className = 'ddi-phone-container';
+                    
+                    // Se for CF7, preservar a largura original antes de qualquer modificação
+                    if (isCF7) {
+                        var originalWidth = input.offsetWidth;
+                        var originalStyle = input.getAttribute('style') || '';
+                        input.setAttribute('data-original-width', originalWidth);
+                        input.setAttribute('data-original-style', originalStyle);
+                    }
                     
                     // Mover input para container
                     input.parentNode.insertBefore(container, input);
@@ -342,6 +353,26 @@ class DDI_WP_Phone_Core {
                     // Ajustar background responsivo
                     adjustResponsiveBackground(container, input);
                     
+                    // Correção específica para CF7
+                    if (isCF7) {
+                        // Restaurar largura original
+                        var savedWidth = input.getAttribute('data-original-width');
+                        if (savedWidth) {
+                            input.style.width = savedWidth + 'px';
+                            input.style.maxWidth = savedWidth + 'px';
+                            input.style.minWidth = savedWidth + 'px';
+                        }
+                        
+                        // Garantir que o container não afete a largura
+                        container.style.width = '100%';
+                        container.style.maxWidth = '100%';
+                        container.style.display = 'inline-block';
+                        
+                        // Aplicar CSS específico para CF7
+                        input.style.boxSizing = 'border-box';
+                        input.style.paddingLeft = '82px';
+                    }
+                    
                     console.log('DDI WP Phone: Seletor adicionado com sucesso');
                     
                 } catch (error) {
@@ -356,6 +387,9 @@ class DDI_WP_Phone_Core {
                     var selector = container.querySelector('.ddi-phone-selector');
                     
                     if (selector && inputHeight > 0) {
+                        // Verificar se é Contact Form 7
+                        var isCF7 = input.classList.contains('wpcf7-form-control') || input.closest('.wpcf7-form');
+                        
                         // Obter informações da borda do input
                         var inputStyle = window.getComputedStyle(input);
                         var inputBorderTop = parseInt(inputStyle.borderTopWidth) || 0;
@@ -415,18 +449,15 @@ class DDI_WP_Phone_Core {
                         selector.style.width = Math.min(selectorWidth, maxSelectorWidth) + 'px';
                         
                         // Correção específica para Contact Form 7 - manter largura original do input
-                        if (input.classList.contains('wpcf7-form-control') || input.closest('.wpcf7-form')) {
+                        if (isCF7) {
                             // Preservar a largura original do input
                             var originalWidth = input.getAttribute('data-original-width');
-                            if (!originalWidth) {
-                                originalWidth = input.offsetWidth;
-                                input.setAttribute('data-original-width', originalWidth);
+                            if (originalWidth) {
+                                // Forçar a largura original
+                                input.style.width = originalWidth + 'px';
+                                input.style.maxWidth = originalWidth + 'px';
+                                input.style.minWidth = originalWidth + 'px';
                             }
-                            
-                            // Forçar a largura original
-                            input.style.width = originalWidth + 'px';
-                            input.style.maxWidth = originalWidth + 'px';
-                            input.style.minWidth = originalWidth + 'px';
                             
                             // Garantir que o container não afete a largura
                             container.style.width = '100%';

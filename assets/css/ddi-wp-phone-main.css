@@ -47,18 +47,35 @@
 .wpcf7-form .ddi-phone-container {
     width: 100% !important;
     max-width: 100% !important;
+    display: inline-block !important;
 }
 
 .wpcf7-form .ddi-phone-container input {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+    padding-left: 82px !important;
 }
 
 .wpcf7-form-control[type="tel"] {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+}
+
+/* Forçar largura específica para CF7 */
+.wpcf7-form .wpcf7-form-control[type="tel"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: auto !important;
+}
+
+/* Garantir que o container CF7 não quebre o layout */
+.wpcf7-form .ddi-phone-container {
+    position: relative !important;
+    display: inline-block !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 /* Dropdown de países */
