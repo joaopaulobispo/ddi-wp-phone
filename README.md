@@ -21,16 +21,29 @@ Plugin WordPress que adiciona um seletor de DDI (código de discagem internacion
 
 ## 📦 Versões Disponíveis
 
-### v1.0.0 (Atual)
+### v1.1.0 (Atual)
+- ✅ Integração completa com Elementor Pro
+- ✅ Integração completa com Contact Form 7
+- ✅ 249 países com bandeiras e máscaras
+- ✅ Background responsivo
+- ✅ Detecção automática de border-radius
+- ✅ Suporte a popups do Elementor
+- ✅ Correção de largura para DDIs maiores
+- ✅ Correção de conflitos em popups
+- ✅ Preservação de dimensões em CF7
+- ✅ Compatibilidade total com temas WordPress
+
+### v1.0.0
+- ✅ Versão inicial estável
 - ✅ Integração completa com Elementor Pro
 - ✅ 249 países com bandeiras e máscaras
 - ✅ Background responsivo
 - ✅ Detecção automática de border-radius
 - ✅ Suporte a popups do Elementor
 - ✅ Correção de largura para DDIs maiores
+- ✅ Compatibilidade total com temas WordPress
 
 ### Próximas Versões
-- 🔄 Integração com Contact Form 7 (Módulo 2)
 - 🔄 Integração com WooCommerce (Módulo 3)
 - 🔄 Painel administrativo completo (Módulo 4)
 
@@ -117,7 +130,17 @@ Este plugin está licenciado sob a GPL v2 ou posterior.
 
 **Wplugin** - https://www.wplugin.com.br
 
-## 🔄 Changelog
+## �� Changelog
+
+### v1.1.0 (2024-01-XX)
+- ✅ **Módulo 2**: Integração completa com Contact Form 7
+- ✅ **Correção**: Bug de largura em formulários CF7
+- ✅ **Correção**: Conflitos entre campos em popups do Elementor
+- ✅ **Melhoria**: Preservação de dimensões originais em CF7
+- ✅ **Melhoria**: Listeners únicos para evitar duplicação
+- ✅ **Melhoria**: Controle de popups processados
+- ✅ **Melhoria**: Limpeza automática ao trocar país
+- ✅ **Estabilidade**: Correções de bugs e melhorias de performance
 
 ### v1.0.0 (2024-01-XX)
 - ✅ Versão inicial estável

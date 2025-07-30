@@ -3,7 +3,7 @@
  * Plugin Name: DDI WP Phone
  * Plugin URI: https://www.wplugin.com.br
  * Description: Adiciona um seletor de DDI (código de discagem internacional) com bandeiras de países a campos de telefone em formulários populares do WordPress, aplicando máscaras de telefone dinamicamente.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Wplugin
  * Author URI: https://www.wplugin.com.br
  * Text Domain: ddi-wp-phone
@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
 define('DDI_WP_PHONE_ENABLED', true);
 
 // Definir constantes do plugin
-define('DDI_WP_PHONE_VERSION', '1.0.0');
+define('DDI_WP_PHONE_VERSION', '1.1.0');
 define('DDI_WP_PHONE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('DDI_WP_PHONE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('DDI_WP_PHONE_PLUGIN_BASENAME', plugin_basename(__FILE__));

@@ -42,7 +42,7 @@ class DDI_WP_Phone_Core {
             'ddi-wp-phone-style',
             DDI_WP_PHONE_PLUGIN_URL . 'assets/css/ddi-wp-phone-main.css',
             array(),
-            '1.0.0'
+            '1.1.0'
         );
     }
     
