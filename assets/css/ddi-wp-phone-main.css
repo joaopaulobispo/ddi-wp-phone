@@ -19,9 +19,7 @@
     display: flex !important;
     align-items: center !important;
     background: #fff !important;
-    border: 1px solid #ddd !important;
-    border-right: none !important;
-    border-radius: 4px 0 0 4px !important;
+    border: none !important;
     cursor: pointer !important;
     min-width: 60px !important;
     padding: 0 8px !important;
@@ -30,11 +28,11 @@
     font-weight: 500 !important;
     transition: all 0.2s ease !important;
     box-sizing: border-box !important;
+    border-radius: 0 !important;
 }
 
 .ddi-phone-selector:hover {
     background: #f8f9fa !important;
-    border-color: #adb5bd !important;
 }
 
 /* Campo de input dentro do container */
@@ -42,9 +40,6 @@
     padding-left: 70px !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    border-left: none !important;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
 }
 
 /* Dropdown de países */

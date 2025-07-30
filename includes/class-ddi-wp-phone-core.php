@@ -363,6 +363,19 @@ class DDI_WP_Phone_Core {
                         // Ajustar posicionamento vertical
                         selector.style.top = '0px';
                         selector.style.bottom = 'auto';
+                        
+                        // Garantir que o seletor não cubra a borda do input
+                        selector.style.margin = '0px';
+                        selector.style.border = 'none';
+                        
+                        // Ajustar padding para não interferir com a borda
+                        var inputPadding = parseInt(window.getComputedStyle(input).paddingTop) || 0;
+                        var inputBorder = parseInt(window.getComputedStyle(input).borderTopWidth) || 0;
+                        
+                        if (inputPadding > 0 || inputBorder > 0) {
+                            selector.style.paddingTop = inputPadding + 'px';
+                            selector.style.paddingBottom = inputPadding + 'px';
+                        }
                     }
                 }
                 
@@ -371,13 +384,26 @@ class DDI_WP_Phone_Core {
                 
                 // Ajustar após um pequeno delay para garantir que o input foi renderizado
                 setTimeout(adjustBackground, 100);
+                setTimeout(adjustBackground, 500);
                 
                 // Observar mudanças no tamanho do input
-                var resizeObserver = new ResizeObserver(function() {
+                if (window.ResizeObserver) {
+                    var resizeObserver = new ResizeObserver(function() {
+                        adjustBackground();
+                    });
+                    
+                    resizeObserver.observe(input);
+                }
+                
+                // Observar mudanças no DOM para garantir ajuste contínuo
+                var observer = new MutationObserver(function() {
                     adjustBackground();
                 });
                 
-                resizeObserver.observe(input);
+                observer.observe(input, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class']
+                });
             }
             
             function toggleDropdown(container, selector) {
