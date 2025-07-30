@@ -356,35 +356,43 @@ class DDI_WP_Phone_Core {
                     var selector = container.querySelector('.ddi-phone-selector');
                     
                     if (selector && inputHeight > 0) {
-                        // Ajustar altura do seletor para corresponder ao input
-                        selector.style.height = inputHeight + 'px';
-                        selector.style.lineHeight = inputHeight + 'px';
+                        // Obter informações da borda do input
+                        var inputStyle = window.getComputedStyle(input);
+                        var inputBorderTop = parseInt(inputStyle.borderTopWidth) || 0;
+                        var inputBorderLeft = parseInt(inputStyle.borderLeftWidth) || 0;
+                        var inputPaddingTop = parseInt(inputStyle.paddingTop) || 0;
+                        var inputPaddingLeft = parseInt(inputStyle.paddingLeft) || 0;
                         
-                        // Ajustar posicionamento vertical
-                        selector.style.top = '0px';
+                        // Calcular altura do seletor (altura do input menos bordas)
+                        var selectorHeight = inputHeight - (inputBorderTop * 2);
+                        
+                        // Ajustar altura do seletor
+                        selector.style.height = selectorHeight + 'px';
+                        selector.style.lineHeight = selectorHeight + 'px';
+                        
+                        // Posicionar o seletor dentro do input (considerando bordas)
+                        selector.style.top = (inputBorderTop + 1) + 'px';
+                        selector.style.left = (inputBorderLeft + 1) + 'px';
                         selector.style.bottom = 'auto';
                         
                         // Garantir que o seletor não cubra a borda do input
                         selector.style.margin = '0px';
                         selector.style.border = 'none';
                         
-                        // Ajustar padding para não interferir com a borda
-                        var inputPadding = parseInt(window.getComputedStyle(input).paddingTop) || 0;
-                        var inputBorder = parseInt(window.getComputedStyle(input).borderTopWidth) || 0;
-                        
-                        if (inputPadding > 0 || inputBorder > 0) {
-                            selector.style.paddingTop = inputPadding + 'px';
-                            selector.style.paddingBottom = inputPadding + 'px';
-                        }
+                        // Ajustar padding para ficar dentro do input
+                        var adjustedPaddingTop = Math.max(0, inputPaddingTop - inputBorderTop);
+                        selector.style.paddingTop = adjustedPaddingTop + 'px';
+                        selector.style.paddingBottom = adjustedPaddingTop + 'px';
                     }
                 }
                 
                 // Ajustar imediatamente
                 adjustBackground();
                 
-                // Ajustar após um pequeno delay para garantir que o input foi renderizado
+                // Ajustar após delays para garantir que o input foi renderizado
                 setTimeout(adjustBackground, 100);
                 setTimeout(adjustBackground, 500);
+                setTimeout(adjustBackground, 1000);
                 
                 // Observar mudanças no tamanho do input
                 if (window.ResizeObserver) {
