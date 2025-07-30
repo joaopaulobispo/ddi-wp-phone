@@ -20,8 +20,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// DEFINIR COMO TRUE PARA REABILITAR
-define('DDI_WP_PHONE_ENABLED', true);
+// DEFINIR COMO FALSE PARA DESABILITAR TEMPORARIAMENTE
+define('DDI_WP_PHONE_ENABLED', false);
 
 // Definir constantes do plugin
 define('DDI_WP_PHONE_VERSION', '1.0.0');
