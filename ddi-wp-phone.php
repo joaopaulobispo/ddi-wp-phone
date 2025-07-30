@@ -20,20 +20,25 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// DEFINIR COMO FALSE PARA DESABILITAR TEMPORARIAMENTE
+define('DDI_WP_PHONE_ENABLED', false);
+
 // Definir constantes do plugin
 define('DDI_WP_PHONE_VERSION', '1.0.0');
 define('DDI_WP_PHONE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('DDI_WP_PHONE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('DDI_WP_PHONE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
-// Incluir a classe principal
-require_once DDI_WP_PHONE_PLUGIN_PATH . 'includes/class-ddi-wp-phone-core.php';
-
-// Inicializar o plugin
-function ddi_wp_phone_init() {
-    new DDI_WP_Phone_Core();
+// Incluir a classe principal apenas se estiver habilitado
+if (DDI_WP_PHONE_ENABLED) {
+    require_once DDI_WP_PHONE_PLUGIN_PATH . 'includes/class-ddi-wp-phone-core.php';
+    
+    // Inicializar o plugin
+    function ddi_wp_phone_init() {
+        new DDI_WP_Phone_Core();
+    }
+    add_action('plugins_loaded', 'ddi_wp_phone_init');
 }
-add_action('plugins_loaded', 'ddi_wp_phone_init');
 
 // Ativação do plugin
 register_activation_hook(__FILE__, 'ddi_wp_phone_activate');
