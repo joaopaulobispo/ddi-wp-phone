@@ -96,6 +96,7 @@ class DDI_WP_Phone_Assets {
         $script_data = array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('ddi_wp_phone_nonce'),
+            'plugin_url' => DDI_WP_PHONE_PLUGIN_URL,
             'settings' => array(
                 'default_country' => isset($settings['default_country']) ? $settings['default_country'] : 'BR',
                 'show_ddi_code' => isset($settings['show_ddi_code']) ? (bool) $settings['show_ddi_code'] : true,
