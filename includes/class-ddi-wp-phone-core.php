@@ -1,11 +1,12 @@
 <?php
 /**
- * Classe Principal do Plugin DDI WP Phone
+ * Classe principal do plugin DDI WP Phone
  * 
  * @package DDI_WP_Phone
  * @since 1.0.0
  */
 
+// Prevenir acesso direto
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -17,162 +18,92 @@ class DDI_WP_Phone_Core {
      */
     public function __construct() {
         $this->init_hooks();
-        $this->load_dependencies();
     }
     
     /**
-     * Inicializa os hooks do WordPress
+     * Inicializar hooks
      */
     private function init_hooks() {
-        add_action('init', array($this, 'init'));
+        // Carregar apenas CSS e JS básico no frontend
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_assets'), 999);
         
-        // Usar prioridade baixa para carregar depois do Elementor
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 999);
-    }
-    
-    /**
-     * Carrega as dependências do plugin
-     */
-    private function load_dependencies() {
-        // Classe de assets
-        require_once DDI_WP_PHONE_PLUGIN_PATH . 'includes/class-ddi-wp-phone-assets.php';
-        
-        // Integrações
-        require_once DDI_WP_PHONE_PLUGIN_PATH . 'integrations/class-elementor-integration.php';
-        require_once DDI_WP_PHONE_PLUGIN_PATH . 'integrations/class-cf7-integration.php';
-        require_once DDI_WP_PHONE_PLUGIN_PATH . 'integrations/class-woocommerce-integration.php';
-        
-        // Admin
-        if (is_admin()) {
-            require_once DDI_WP_PHONE_PLUGIN_PATH . 'admin/class-admin-settings.php';
+        // Inicializar apenas se necessário
+        if (!is_admin()) {
+            add_action('wp_footer', array($this, 'add_simple_script'), 999);
         }
     }
     
     /**
-     * Inicialização do plugin
+     * Carregar assets básicos
      */
-    public function init() {
-        // Carregar text domain para internacionalização
-        load_plugin_textdomain('ddi-wp-phone', false, dirname(DDI_WP_PHONE_PLUGIN_BASENAME) . '/languages');
-        
-        // Inicializar integrações apenas se necessário
-        if ($this->should_load_integrations()) {
-            new DDI_WP_Phone_Elementor_Integration();
-            new DDI_WP_Phone_CF7_Integration();
-            new DDI_WP_Phone_WooCommerce_Integration();
-        }
-        
-        // Inicializar admin se necessário
-        if (is_admin()) {
-            new DDI_WP_Phone_Admin_Settings();
-        }
+    public function enqueue_assets() {
+        // Apenas CSS básico
+        wp_enqueue_style(
+            'ddi-wp-phone-style',
+            DDI_WP_PHONE_PLUGIN_URL . 'assets/css/ddi-wp-phone-main.css',
+            array(),
+            DDI_WP_PHONE_VERSION
+        );
     }
     
     /**
-     * Enfileira scripts e estilos
+     * Adicionar script simples no footer
      */
-    public function enqueue_scripts() {
-        // Verificar se há formulários na página de forma mais segura
-        if ($this->should_load_assets()) {
-            $assets = new DDI_WP_Phone_Assets();
-            $assets->enqueue_frontend_assets();
-        }
-    }
-    
-    /**
-     * Verifica se deve carregar as integrações
-     */
-    private function should_load_integrations() {
-        // Verificar se estamos no frontend
-        if (is_admin()) {
-            return false;
-        }
-        
-        // Verificar se há formulários do Elementor
-        if (class_exists('Elementor\Plugin')) {
-            return true;
-        }
-        
-        // Verificar se há formulários do Contact Form 7
-        if (class_exists('WPCF7')) {
-            return true;
-        }
-        
-        // Verificar se há WooCommerce
-        if (class_exists('WooCommerce')) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Verifica se deve carregar os assets
-     */
-    private function should_load_assets() {
-        // Verificar se estamos no frontend
-        if (is_admin()) {
-            return false;
-        }
-        
-        // Verificar se há formulários do Elementor
-        if (class_exists('Elementor\Plugin') && $this->has_elementor_forms()) {
-            return true;
-        }
-        
-        // Verificar se há formulários do Contact Form 7
-        if (class_exists('WPCF7') && $this->has_cf7_forms()) {
-            return true;
-        }
-        
-        // Verificar se é página do WooCommerce
-        if (class_exists('WooCommerce') && (is_checkout() || is_account_page())) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Verifica se há formulários do Elementor na página
-     */
-    private function has_elementor_forms() {
-        global $post;
-        
-        if (!$post) {
-            return false;
-        }
-        
-        // Verificar se o Elementor está ativo
-        if (!class_exists('Elementor\Plugin')) {
-            return false;
-        }
-        
-        // Verificar se o post foi criado com Elementor
-        $document = \Elementor\Plugin::$instance->documents->get($post->ID);
-        if (!$document || !$document->is_built_with_elementor()) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Verifica se há formulários do Contact Form 7 na página
-     */
-    private function has_cf7_forms() {
-        global $post;
-        
-        if (!$post) {
-            return false;
-        }
-        
-        // Verificar se o CF7 está ativo
-        if (!class_exists('WPCF7')) {
-            return false;
-        }
-        
-        // Verificar se há shortcodes do CF7 no conteúdo
-        return has_shortcode($post->post_content, 'contact-form-7');
+    public function add_simple_script() {
+        ?>
+        <script>
+        (function() {
+            'use strict';
+            
+            // Aguardar DOM estar pronto
+            function init() {
+                // Processar apenas após um delay para garantir que tudo carregou
+                setTimeout(function() {
+                    processPhoneFields();
+                }, 2000);
+            }
+            
+            function processPhoneFields() {
+                try {
+                    // Buscar campos de telefone de forma passiva
+                    var phoneInputs = document.querySelectorAll('input[type="tel"]');
+                    
+                    phoneInputs.forEach(function(input) {
+                        if (!input.classList.contains('ddi-processed')) {
+                            addPhoneSelector(input);
+                        }
+                    });
+                    
+                } catch (error) {
+                    console.log('DDI WP Phone: Erro ao processar campos:', error);
+                }
+            }
+            
+            function addPhoneSelector(input) {
+                try {
+                    // Marcar como processado
+                    input.classList.add('ddi-processed');
+                    
+                    // Adicionar classe para CSS
+                    input.classList.add('ddi-phone-field');
+                    
+                    // Aplicar padding via CSS
+                    input.style.paddingLeft = '70px';
+                    
+                } catch (error) {
+                    console.log('DDI WP Phone: Erro ao adicionar seletor:', error);
+                }
+            }
+            
+            // Inicializar quando DOM estiver pronto
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+            
+        })();
+        </script>
+        <?php
     }
 } 
