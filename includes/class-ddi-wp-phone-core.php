@@ -413,6 +413,25 @@ class DDI_WP_Phone_Core {
                         var selectorWidth = 70; // largura base do seletor (aumentada para acomodar DDIs maiores)
                         var maxSelectorWidth = inputWidth - (inputBorderLeft + inputBorderRight) - 2; // -2 para 1px de cada lado
                         selector.style.width = Math.min(selectorWidth, maxSelectorWidth) + 'px';
+                        
+                        // Correção específica para Contact Form 7 - manter largura original do input
+                        if (input.classList.contains('wpcf7-form-control') || input.closest('.wpcf7-form')) {
+                            // Preservar a largura original do input
+                            var originalWidth = input.getAttribute('data-original-width');
+                            if (!originalWidth) {
+                                originalWidth = input.offsetWidth;
+                                input.setAttribute('data-original-width', originalWidth);
+                            }
+                            
+                            // Forçar a largura original
+                            input.style.width = originalWidth + 'px';
+                            input.style.maxWidth = originalWidth + 'px';
+                            input.style.minWidth = originalWidth + 'px';
+                            
+                            // Garantir que o container não afete a largura
+                            container.style.width = '100%';
+                            container.style.maxWidth = '100%';
+                        }
                     }
                 }
                 

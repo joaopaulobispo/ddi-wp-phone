@@ -43,6 +43,24 @@
     box-sizing: border-box !important;
 }
 
+/* Correções específicas para Contact Form 7 */
+.wpcf7-form .ddi-phone-container {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.wpcf7-form .ddi-phone-container input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.wpcf7-form-control[type="tel"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
 /* Dropdown de países */
 .ddi-phone-dropdown {
     position: absolute !important;
