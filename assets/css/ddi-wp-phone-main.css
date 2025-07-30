@@ -1,0 +1,183 @@
+/**
+ * DDI WP Phone - Estilos Principais
+ * 
+ * @package DDI_WP_Phone
+ * @since 1.0.0
+ */
+
+/* Container do campo de telefone */
+.ddi-wp-phone-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Seletor de país */
+.ddi-wp-phone-selector {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.ddi-wp-phone-selector:hover {
+    background: #f8f9fa;
+}
+
+/* Bandeira selecionada */
+.ddi-wp-phone-flag {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.ddi-wp-phone-flag img {
+    width: 20px;
+    height: 15px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+.ddi-wp-phone-flag .ddi-code {
+    font-weight: 500;
+    margin-left: 3px;
+}
+
+/* Dropdown de países */
+.ddi-wp-phone-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    min-width: 200px;
+}
+
+.ddi-wp-phone-dropdown.show {
+    display: block;
+}
+
+/* Item do dropdown */
+.ddi-wp-phone-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ddi-wp-phone-item:last-child {
+    border-bottom: none;
+}
+
+.ddi-wp-phone-item:hover {
+    background: #f8f9fa;
+}
+
+.ddi-wp-phone-item.selected {
+    background: #e3f2fd;
+}
+
+.ddi-wp-phone-item .flag {
+    width: 20px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.ddi-wp-phone-item .country-name {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.ddi-wp-phone-item .country-code {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Campo de input */
+.ddi-wp-phone-container input[type="tel"] {
+    padding-left: 70px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .ddi-wp-phone-selector {
+        min-width: 50px;
+    }
+    
+    .ddi-wp-phone-container input[type="tel"] {
+        padding-left: 60px !important;
+    }
+    
+    .ddi-wp-phone-dropdown {
+        min-width: 180px;
+    }
+}
+
+/* Estados especiais */
+.ddi-wp-phone-container.error .ddi-wp-phone-selector {
+    border-color: #dc3545;
+}
+
+.ddi-wp-phone-container.success .ddi-wp-phone-selector {
+    border-color: #28a745;
+}
+
+/* Animações */
+@keyframes ddi-wp-phone-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ddi-wp-phone-dropdown.show {
+    animation: ddi-wp-phone-fadeIn 0.2s ease-out;
+}
+
+/* Scrollbar personalizada para o dropdown */
+.ddi-wp-phone-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ddi-wp-phone-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.ddi-wp-phone-dropdown::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.ddi-wp-phone-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+} 
