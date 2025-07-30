@@ -1,6 +1,6 @@
 /**
  * DDI WP Phone - Estilos principais
- * Versão para estrutura DOM criada via JavaScript
+ * Versão completa com dropdown e correções de bordas
  */
 
 /* Container do campo de telefone */
@@ -29,6 +29,12 @@
     font-size: 14px !important;
     color: #333 !important;
     font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+.ddi-phone-selector:hover {
+    background: #f8f9fa !important;
+    border-color: #adb5bd !important;
 }
 
 /* Campo de input dentro do container */
@@ -36,6 +42,43 @@
     padding-left: 70px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    border-left: none !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Dropdown de países */
+.ddi-phone-dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    min-width: 200px !important;
+    margin-top: 2px !important;
+}
+
+/* Itens do dropdown */
+.ddi-phone-item {
+    padding: 8px 12px !important;
+    cursor: pointer !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    font-size: 14px !important;
+    color: #333 !important;
+    transition: background 0.2s ease !important;
+}
+
+.ddi-phone-item:last-child {
+    border-bottom: none !important;
+}
+
+.ddi-phone-item:hover {
+    background: #f8f9fa !important;
 }
 
 /* Responsividade */
@@ -43,9 +86,20 @@
     .ddi-phone-selector {
         min-width: 50px !important;
         font-size: 12px !important;
+        padding: 0 6px !important;
     }
     
     .ddi-phone-container input {
         padding-left: 60px !important;
+    }
+    
+    .ddi-phone-dropdown {
+        min-width: 180px !important;
+        max-height: 150px !important;
+    }
+    
+    .ddi-phone-item {
+        padding: 6px 10px !important;
+        font-size: 13px !important;
     }
 } 
